@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\ActivityLog;
+use App\Models\Device;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Laravel\Fortify\Features;
+use App\Http\Controllers\DeviceController;
 
 Route::get('/', function () {
     return Inertia::render('welcome', [
@@ -17,3 +20,25 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 require __DIR__.'/settings.php';
+
+Route::get('/relay', function() {
+    $devices = Device::all();
+    return Inertia::render('Devices', [
+        'devices' => $devices,
+    ]);
+});
+
+// Route::get('/relay/{ip}/{value}/details', function ($ip, $value) {
+Route::get('/relay/{id}/details', [DeviceController::class, "viewDetails"]);
+
+Route::post('/relay/{id}/details', [DeviceController::class, "updateIP"]);
+
+// THIS IS FOR A CONTROLLER
+Route::get('/relay/{id}', [DeviceController::class, "togglePower"]);
+
+Route::get('/history', function () {
+    $ActivityLog = ActivityLog::all();
+
+    return $ActivityLog;
+});
+
