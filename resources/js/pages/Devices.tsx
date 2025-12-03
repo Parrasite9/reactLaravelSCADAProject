@@ -37,11 +37,11 @@ export default function Devices({ devices }) {
 
                 <div className="powerContainer flex">
                     <div className="onOffButton">
-                        {device.value < 1 && (
+                        {device.value === 1 && (
                             <button className="bg-red-400 px-4 hover:bg-red-200" onClick={() => turnOnRelay(device.id)}>OFF</button>
                         )}
 
-                        {device.value < 0 && (
+                        {device.value === 0 && (
                             <button className="bg-green-400 px-4 hover:bg-green-200" onClick={() => turnOffRelay(device.id)}>ON</button>
                         )}
                     </div>
