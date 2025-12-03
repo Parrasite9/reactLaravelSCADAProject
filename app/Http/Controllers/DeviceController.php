@@ -6,6 +6,7 @@ use App\Models\ActivityLog;
 use App\Models\Device;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Inertia\Inertia;
 
 class DeviceController extends Controller
 {
@@ -38,13 +39,16 @@ class DeviceController extends Controller
 
     public function viewDetails($id) {
         $device = Device::findOrFail($id);
-        return view('details', ['device' => $device]);
+        return Inertia::render('Details', [
+            'device' => $device,
+        ]);
     }
 
     public function updateIP($id, Request $request) {
         $device = Device::findOrFail($id);
 
         $device->ip = $request->input('ip');
+        $device->port = $request->port;
         $device->save();
 
         return back()->with('success', 'Device updated successfully');
@@ -77,4 +81,5 @@ class DeviceController extends Controller
         return redirect()->back()->with('success', 'Device created!');
 
     }
+
 }

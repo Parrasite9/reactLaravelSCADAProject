@@ -28,10 +28,11 @@ export default function Devices({ devices }) {
     <div>
         <h1>Device Page</h1>
 
-        {[].map(device => (
+        {devices.map(device => (
+            <>
             <div className="flex justify-around mb-4">
                 <div className="deviceContainer">
-                    <div>DEVICE NAME: ${device.ip}</div>
+                    <div>DEVICE NAME: {device.ip}:{device.port || ' no port'}</div>
                 </div>
 
                 <div className="powerContainer flex">
@@ -41,7 +42,7 @@ export default function Devices({ devices }) {
                         )}
 
                         {device.value < 0 && (
-                            <button className="bg-green-400 px-4 hover:bg-red-200" onClick={() => turnOffRelay(device.id)}>ON</button>
+                            <button className="bg-green-400 px-4 hover:bg-green-200" onClick={() => turnOffRelay(device.id)}>ON</button>
                         )}
                     </div>
 
@@ -51,8 +52,10 @@ export default function Devices({ devices }) {
                         </a>
                     </div>
                 </div>
-                <span className="border-solid border-2 border-blue-400 w-full"></span>
             </div>
+                <span className="border-solid border-2 border-blue-400 w-full"></span>
+                </>
+
         ))}
     </div>
   )
