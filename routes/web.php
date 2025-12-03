@@ -22,11 +22,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
 require __DIR__.'/settings.php';
 
 Route::get('/relay', function() {
-    $devices = Device::all();
+    $myAss = Device::all();
     return Inertia::render('Devices', [
-        'devices' => $devices,
+        'devices' => $myAss,
     ]);
 });
+
+Route::get('/create-device', function(){
+    $allDevices = Device::all();
+    return Inertia::render('CreateDevice', [
+        'IP' => $allDevices,
+    ]);
+});
+
+Route::post('/create-device', [DeviceController::class, "createDevice"]);
+
 
 // Route::get('/relay/{ip}/{value}/details', function ($ip, $value) {
 Route::get('/relay/{id}/details', [DeviceController::class, "viewDetails"]);

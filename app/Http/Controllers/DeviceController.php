@@ -49,4 +49,32 @@ class DeviceController extends Controller
 
         return back()->with('success', 'Device updated successfully');
     }
+
+    public function createDevice(Request $request) { //Receives form data from react
+
+        // Checks the IP is valid
+        $validated = $request->validate([
+            'ip' => ['required', 'regex:/^\d{1,2}\.\d{1,2}\.\d{1,2}\.\d{1,2}$/'],
+            'port' => 'required|integer|min:1|max:65535'
+        ]);
+
+        $exists = Device::where('ip', $validated['ip'])
+                            ->where('port', $validated['port'])
+                            ->exists();
+
+        if ($exists) {
+            return back()->withErrors(['ip' => 'This IP + port combination already exists']);
+        }
+
+        // Saves new device in DB
+        Device::create([
+            'ip' => $validated['ip'],
+            'port' => $validated['port'],
+            'value' => 0,
+        ]);
+
+        // Sends user back with a success message
+        return redirect()->back()->with('success', 'Device created!');
+
+    }
 }

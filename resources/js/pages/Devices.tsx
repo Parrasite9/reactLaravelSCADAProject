@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 
-export default function Devices() {
+export default function Devices({ devices }) {
+    console.log(devices);
+
     const [isOn, setIsOn] = useState(false);
     const [value, setValue] = useState(0);
 
