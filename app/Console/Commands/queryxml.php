@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Device;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -27,9 +28,17 @@ class queryxml extends Command
      */
     public function handle()
     {
-        $ip = $this->ask("What IP are you trying to access? (DONT INCLUDE PORT)");
-        $port = $this->ask("What is the Port?");
-        $ipAndPort = "{$ip}".':'."{$port}";
+        $ip = $this->ask('What IP are you trying to access? (DONT INCLUDE PORT)');
+        $port = $this->ask('What is the Port?');
+
+        $firstDevice = Device::query()->where('ip', '=', $ip)->where('port', '=', $port)->first();
+
+        if (!$firstDevice) {
+            $this->info('Device Not Found');
+            return Command::FAILURE;
+        }
+
+        $ipAndPort = "{$ip}" . ':' . "{$port}";
         $this->info("Checking {$ipAndPort}");
 
         $dataRoute = "http://{$ipAndPort}/state.xml";
@@ -47,7 +56,6 @@ class queryxml extends Command
         $valueAsString = (string) $xmlObject->relay1state;
 
         $valueAsBool = (bool) $valueAsString;
-
 
         // $this->info($xml);
 
