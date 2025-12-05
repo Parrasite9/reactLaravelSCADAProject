@@ -23,16 +23,17 @@ class DeviceController extends Controller
         $device->save();
 
         $ip = $device->ip;
+        $port = $device->port;
 
         $NewEntry = new ActivityLog();
         $NewEntry->value = $value;
         $NewEntry->save();
 
         if ($value == 1) {
-            $response = Http::get("http://{$ip}/state.xml?relay1=1");
+            $response = Http::get("http://{$ip}:{$port}/state.xml?relay1=1");
             return 'Power is: On';
         } else {
-            $response = Http::get("http://{$ip}/state.xml?relay1=0");
+            $response = Http::get("http://{$ip}:{$port}/state.xml?relay1=0");
             return 'Power is: Off';
         }
     }
