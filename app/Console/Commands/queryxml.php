@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\ActivityLog;
 use App\Models\Device;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
@@ -56,6 +57,12 @@ class queryxml extends Command
         $valueAsString = (string) $xmlObject->relay1state;
 
         $valueAsBool = (bool) $valueAsString;
+
+        $newActivityLog = new ActivityLog();
+
+        $newActivityLog->value = $valueAsBool;
+        $newActivityLog->save();
+
 
         // $this->info($xml);
 
